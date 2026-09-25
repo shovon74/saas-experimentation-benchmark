@@ -1,0 +1,9 @@
+google-cloud-bigquery
+db-dtypes
+python-dotenv
+pandas
+numpy
+scipy
+statsmodels
+jupyter
+matplotlib

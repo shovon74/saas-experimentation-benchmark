@@ -1,5 +1,8 @@
 venv/
-data/raw/
+data/synthetic/
 .env
 credentials
 logs/
+*.json
+__pycache__/
+.ipynb_checkpoints/

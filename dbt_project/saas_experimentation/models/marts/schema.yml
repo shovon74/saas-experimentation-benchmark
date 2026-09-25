@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: dim_accounts
+    description: >
+      One row per synthetic account, with derived tenure in months.
+    columns:
+      - name: account_id
+        description: Unique account identifier.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: industry
+        description: Industry category assigned to the account.
+        data_tests:
+          - not_null
+
+      - name: arr_tier
+        description: Annual recurring revenue tier.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['SMB', 'Mid-Market', 'Enterprise']
+
+      - name: onboarding_date
+        description: Date the account was onboarded.
+        data_tests:
+          - not_null
+
+      - name: tenure_months
+        description: Months since onboarding, calculated from onboarding_date.
+        data_tests:
+          - not_null
+
+  - name: fct_experiment_metrics
+    description: >
+      Experiment performance aggregated by variant and engagement tier.
+      Analysis-ready table for statistical testing and dashboarding.
+    columns:
+      - name: experiment_variant
+        description: Experiment variant — gate_30 (control) or gate_40 (treatment).
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['gate_30', 'gate_40']
+
+      - name: engagement_tier
+        description: Player engagement tier derived from game rounds played.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['Low', 'Medium-Low', 'Medium-High', 'High']
+
+      - name: total_players
+        description: Number of players in this variant/tier combination.
+        data_tests:
+          - not_null
+
+      - name: retention_rate_day_1
+        description: Share of players who returned 1 day after install.
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+              inclusive: true
+
+      - name: retention_rate_day_7
+        description: Share of players who returned 7 days after install.
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+              inclusive: true
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - experiment_variant
+            - engagement_tier

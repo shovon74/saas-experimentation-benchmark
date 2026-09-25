@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: raw
+    database: adidasdata          # your GCP project ID — update if different
+    schema: saas_experimentation  # the dataset you created
+    tables:
+      - name: raw_cookie_cats
+        description: >
+          Raw A/B test data from the Cookie Cats mobile game experiment
+          (gate placement at level 30 vs 40), sourced from Kaggle.
+        columns:
+          - name: userid
+            description: Unique player identifier.
+          - name: version
+            description: Experiment variant — gate_30 (control) or gate_40 (treatment).
+          - name: sum_gamerounds
+            description: Total game rounds played by the player.
+          - name: retention_1
+            description: Whether the player returned 1 day after install.
+          - name: retention_7
+            description: Whether the player returned 7 days after install.
+
+      - name: raw_accounts
+        description: >
+          Synthetic B2B account data generated for this project
+          (not real customer data — see project README).
+        columns:
+          - name: account_id
+            description: Unique synthetic account identifier.
+          - name: industry
+            description: Industry category assigned to the account.
+          - name: arr_tier
+            description: Annual recurring revenue tier — SMB, Mid-Market, or Enterprise.
+          - name: onboarding_date
+            description: Date the account was onboarded.
